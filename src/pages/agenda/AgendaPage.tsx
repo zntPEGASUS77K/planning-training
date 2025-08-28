@@ -15,26 +15,19 @@ import { Card, CardContent } from "../../components/ui/card.tsx";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "../../components/ui/navigation-menu.tsx";
 import { Frame } from "./modal-thematique.tsx";
 import { ModalSeance } from "./modal-seance.tsx";
-
-// Utility function to generate calendar days
 const getCalendarDays = (month: string, year: number) => {
     const monthIndex = [
         "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
     ].indexOf(month);
-
-    // Create a date for the first day of the month
     const firstDay = new Date(year, monthIndex, 1);
-    const lastDay = new Date(year, monthIndex + 1, 0); // Last day of the month
+    const lastDay = new Date(year, monthIndex + 1, 0);
     const daysInMonth = lastDay.getDate();
-    const firstDayOfWeek = firstDay.getDay(); // 0 (Sunday) to 6 (Saturday)
-
-    // Calculate days from previous month to fill the grid
+    const firstDayOfWeek = firstDay.getDay();
     const prevMonthDays = [];
     const prevMonth = monthIndex === 0 ? 11 : monthIndex - 1;
     const prevMonthYear = monthIndex === 0 ? year - 1 : year;
     const lastDayPrevMonth = new Date(prevMonthYear, prevMonth + 1, 0).getDate();
-
     for (let i = firstDayOfWeek - 1; i >= 0; i--) {
         prevMonthDays.push({
             day: lastDayPrevMonth - i,
@@ -43,19 +36,15 @@ const getCalendarDays = (month: string, year: number) => {
             isOtherMonth: true,
         });
     }
-
-    // Calculate days for the current month
     const currentMonthDays = Array.from({ length: daysInMonth }, (_, i) => ({
         day: i + 1,
         isWeekend: (firstDayOfWeek + i) % 7 === 0 || (firstDayOfWeek + i) % 7 === 6,
         events: [],
         isOtherMonth: false,
     }));
-
-    // Calculate days from next month to fill the grid
     const nextMonthDays = [];
     const totalDays = prevMonthDays.length + currentMonthDays.length;
-    const remainingDays = 42 - totalDays; // Assuming a 6x7 grid
+    const remainingDays = 42 - totalDays;
     for (let i = 1; i <= remainingDays; i++) {
         nextMonthDays.push({
             day: i,
@@ -64,7 +53,6 @@ const getCalendarDays = (month: string, year: number) => {
             isOtherMonth: true,
         });
     }
-
     return [...prevMonthDays, ...currentMonthDays, ...nextMonthDays];
 };
 
@@ -74,7 +62,6 @@ export const AgendaPage = (): React.JSX.Element => {
     const [hoveredCell, setHoveredCell] = useState<number | null>(null);
     const [selectedMonth, setSelectedMonth] = useState("Juillet");
     const [selectedYear, setSelectedYear] = useState(2025);
-
     const navigationItems = [
         { label: "Annuelle", href: "#", isActive: true },
         { label: "Consulter", href: "#" },
@@ -87,10 +74,7 @@ export const AgendaPage = (): React.JSX.Element => {
         "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
         "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
     ].map(name => ({ name, isSelected: selectedMonth === name }));
-
     const weekDays = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-
-    // Generate calendar days using useMemo to optimize performance
     const calendarDays = useMemo(() => getCalendarDays(selectedMonth, selectedYear), [selectedMonth, selectedYear]);
 
     const themeFilters = [
