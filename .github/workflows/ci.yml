@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4  # Updated to v4 for consistency
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -28,10 +28,10 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: echo "Skipping tests - not configured yet"
+        run: echo "Skipping tests - not configured yet"  # Consider adding actual tests (e.g., npm run test)
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4  # Updated to v4 for consistency
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
@@ -56,10 +56,11 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: build/
+          retention-days: 7
 
 #  lint:
 #    runs-on: ubuntu-latest
@@ -69,7 +70,7 @@ jobs:
 #        uses: actions/checkout@v4
 #
 #      - name: Setup Node.js
-#        uses: actions/setup-node@v3
+#        uses: actions/setup-node@v4  # Updated to v4
 #        with:
 #          node-version: '20.x'
 #          cache: 'npm'
@@ -81,4 +82,4 @@ jobs:
 #        run: npm run lint
 #
 #      - name: Check types
-#        run: echo "Skipping type check - not configured yet"
+#        run: echo "Skipping type check - not configured yet"  # Consider adding type checking (e.g., npm run type-check)
