@@ -1,0 +1,14 @@
+{
+  "nodes": [
+    {
+      "id": "src/pages/AgendaPage.tsx",
+      "label": "AgendaPage",
+      "routes": [
+        "/*"
+      ],
+      "dataModelId": "207:2118",
+      "isRoot": true
+    }
+  ],
+  "edges": []
+}
